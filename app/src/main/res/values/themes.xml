@@ -1,0 +1,9 @@
+<resources>
+
+    <style name="Theme.Nasa" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/nasa_logo_blue</item>
+        <item name="colorPrimaryDark">@color/nasa_logo_blue</item>
+        <item name="colorAccent">@color/nasa_logo_red</item>
+    </style>
+
+</resources>
