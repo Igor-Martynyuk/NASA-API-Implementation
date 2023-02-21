@@ -1,4 +1,4 @@
-package com.devmartyniuk.nasa.api.implementation.layer.data.getaway.web.neo.ws
+package com.devmartyniuk.nasa.api.implementation.layer.data.rest.neo.ws
 
 import com.devmartyniuk.nasa.api.implementation.layer.domain.get.neo.port.InNearEarthObjectList
 import com.devmartyniuk.nasa.api.implementation.layer.domain.get.neo.port.InNearEarthObject

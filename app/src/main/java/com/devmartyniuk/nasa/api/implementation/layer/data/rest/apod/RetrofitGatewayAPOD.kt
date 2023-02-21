@@ -1,4 +1,4 @@
-package com.devmartyniuk.nasa.api.implementation.layer.data.getaway.web.apod
+package com.devmartyniuk.nasa.api.implementation.layer.data.rest.apod
 
 import com.devmartyniuk.nasa.api.implementation.layer.domain.get.pod.dto.PictureOfTheDay
 import com.devmartyniuk.nasa.api.implementation.layer.domain.get.pod.port.InPortPictureOfDay

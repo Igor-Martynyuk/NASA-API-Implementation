@@ -1,4 +1,4 @@
-package com.devmartyniuk.nasa.api.implementation.layer.data.getaway.web.neo.ws.dto.nested
+package com.devmartyniuk.nasa.api.implementation.layer.data.rest.neo.ws.dto.nested
 
 import com.squareup.moshi.Json
 

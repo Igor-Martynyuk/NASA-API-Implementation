@@ -1,8 +1,8 @@
-package com.devmartyniuk.nasa.api.implementation.layer.data.getaway.web.neo.ws
+package com.devmartyniuk.nasa.api.implementation.layer.data.rest.neo.ws
 
-import com.devmartyniuk.nasa.api.implementation.layer.data.getaway.web.neo.ws.dto.ResponseNeoBrowse
-import com.devmartyniuk.nasa.api.implementation.layer.data.getaway.web.neo.ws.dto.ResponseNeoFeed
-import com.devmartyniuk.nasa.api.implementation.layer.data.getaway.web.neo.ws.dto.ResponseNeoLookUp
+import com.devmartyniuk.nasa.api.implementation.layer.data.rest.neo.ws.dto.ResponseNeoBrowse
+import com.devmartyniuk.nasa.api.implementation.layer.data.rest.neo.ws.dto.ResponseNeoFeed
+import com.devmartyniuk.nasa.api.implementation.layer.data.rest.neo.ws.dto.ResponseNeoLookUp
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

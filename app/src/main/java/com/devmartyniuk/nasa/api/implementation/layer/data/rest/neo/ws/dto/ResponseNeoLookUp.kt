@@ -1,8 +1,8 @@
-package com.devmartyniuk.nasa.api.implementation.layer.data.getaway.web.neo.ws.dto
+package com.devmartyniuk.nasa.api.implementation.layer.data.rest.neo.ws.dto
 
-import com.devmartyniuk.nasa.api.implementation.layer.data.getaway.web.neo.ws.dto.nested.ResponseNeoCloseApproachData
-import com.devmartyniuk.nasa.api.implementation.layer.data.getaway.web.neo.ws.dto.nested.ResponseNeoDiameter
-import com.devmartyniuk.nasa.api.implementation.layer.data.getaway.web.neo.ws.dto.nested.ResponseNeoOrbitalData
+import com.devmartyniuk.nasa.api.implementation.layer.data.rest.neo.ws.dto.nested.ResponseNeoCloseApproachData
+import com.devmartyniuk.nasa.api.implementation.layer.data.rest.neo.ws.dto.nested.ResponseNeoDiameter
+import com.devmartyniuk.nasa.api.implementation.layer.data.rest.neo.ws.dto.nested.ResponseNeoOrbitalData
 import com.squareup.moshi.Json
 
 data class ResponseNeoLookUp(

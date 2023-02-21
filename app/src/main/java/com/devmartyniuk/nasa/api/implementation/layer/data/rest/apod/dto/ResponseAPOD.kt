@@ -1,4 +1,4 @@
-package com.devmartyniuk.nasa.api.implementation.layer.data.getaway.web.apod.dto
+package com.devmartyniuk.nasa.api.implementation.layer.data.rest.apod.dto
 
 import com.squareup.moshi.Json
 
