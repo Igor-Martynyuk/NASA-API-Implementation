@@ -2,17 +2,18 @@ package com.devmartyniuk.nasa.api.implementation.layer.ui.main
 
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.devmartyniuk.nasa.api.implementation.R
 import com.devmartyniuk.nasa.api.implementation.layer.data.rest.neo.ws.RetrofitGatewayNeoWS
+import com.devmartyniuk.nasa.api.implementation.layer.domain.get.neo.CaseGetNearEarthObjectList
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
@@ -65,29 +66,15 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        lifecycleScope.launch(
-            CoroutineExceptionHandler { _, e ->
-                lifecycleScope.launch {
-                    e.printStackTrace()
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Oops! Something went wrong: ${e::class.simpleName}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-        ) {
-            withContext(Dispatchers.IO) {
-                gateway.getNearEarthObjects(
-                    Calendar.getInstance(),
-                    Calendar.getInstance().apply {
-                        set(Calendar.DAY_OF_MONTH, get(Calendar.DAY_OF_MONTH) - 1)
-                    }
-                )
-            }
-                .let {
-                    findViewById<TextView>(R.id.output).text = "Success!\n\n$it"
-                }
+        val output = findViewById<TextView>(R.id.output)
+        var received = 0
+
+        lifecycleScope.launch {
+            CaseGetNearEarthObjectList(gateway)
+                .execute(Unit)
+                .onStart { output.text = "loading" }
+                .catch { output.text = "Error! ${it::class.simpleName}" }
+                .collect { output.text = "Success! Received objects count: ${++received}" }
         }
     }
 }
