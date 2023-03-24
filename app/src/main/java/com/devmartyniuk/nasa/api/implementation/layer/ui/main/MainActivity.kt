@@ -8,8 +8,7 @@ import com.devmartyniuk.nasa.api.implementation.R
 import com.devmartyniuk.nasa.api.implementation.layer.data.rest.neo.ws.RetrofitGatewayNeoWS
 import com.devmartyniuk.nasa.api.implementation.layer.domain.get.neo.CaseGetNearEarthObjectList
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -69,12 +68,13 @@ class MainActivity : AppCompatActivity() {
         val output = findViewById<TextView>(R.id.output)
         var received = 0
 
-        lifecycleScope.launch {
-            CaseGetNearEarthObjectList(gateway)
-                .execute(Unit)
-                .onStart { output.text = "loading" }
-                .catch { output.text = "Error! ${it::class.simpleName}" }
-                .collect { output.text = "Success! Received objects count: ${++received}" }
-        }
+        CaseGetNearEarthObjectList(gateway)
+            .prepare(Unit)
+            .flowOn(Dispatchers.IO)
+            .onStart { output.text = "loading" }
+            .onEach { received++ }
+            .onCompletion { output.text = "Success! Received objects count: $received" }
+            .catch { output.text = "Error! ${it::class.simpleName}" }
+            .launchIn(lifecycleScope)
     }
 }
