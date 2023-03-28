@@ -1,21 +1,29 @@
 package com.devmartyniuk.nasa.api.implementation.layer.ui.main
 
-import android.os.Bundle
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.devmartyniuk.nasa.api.implementation.R
+import androidx.lifecycle.*
 import com.devmartyniuk.nasa.api.implementation.layer.data.rest.neo.ws.RetrofitGatewayNeoWS
 import com.devmartyniuk.nasa.api.implementation.layer.domain.get.neo.CaseGetNearEarthObjectList
-import kotlinx.coroutines.*
+import com.devmartyniuk.nasa.api.implementation.layer.domain.get.neo.dto.NearEarthObject
+import com.hadilq.liveevent.LiveEvent
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
-class MainActivity : AppCompatActivity() {
+class ViewModelMain : ViewModel() {
+    private val _errorData = LiveEvent<Throwable?>()
+    val errorData = _errorData as LiveData<Throwable?>
+
+    private val _isInProgressData = MutableLiveData(false)
+    val isInProgressData get() = _isInProgressData as LiveData<Boolean>
+
+    private val _nearEarthObjectsData = MutableLiveData(listOf<NearEarthObject>())
+    val nearEarthObjectsData get() = _nearEarthObjectsData as LiveData<List<NearEarthObject>>
+
     private val httpClient = OkHttpClient.Builder()
         .addInterceptor(
             HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
@@ -57,24 +65,13 @@ class MainActivity : AppCompatActivity() {
             .build()
     )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.main)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        val output = findViewById<TextView>(R.id.output)
-        var received = 0
-
-        CaseGetNearEarthObjectList(gateway)
+    fun onViewReady() = viewModelScope.launch {
+        _nearEarthObjectsData.value = CaseGetNearEarthObjectList(gateway)
             .prepare(Unit)
             .flowOn(Dispatchers.IO)
-            .onStart { output.text = "loading" }
-            .onEach { received++ }
-            .onCompletion { output.text = "Success! Received objects count: $received" }
-            .catch { output.text = "Error! ${it::class.simpleName}" }
-            .launchIn(lifecycleScope)
+            .onStart { _isInProgressData.value = true }
+            .onCompletion { _isInProgressData.value = false }
+            .catch { _errorData.value = it }
+            .toList()
     }
 }

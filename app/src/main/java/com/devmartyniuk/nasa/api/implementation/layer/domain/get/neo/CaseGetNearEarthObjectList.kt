@@ -10,5 +10,6 @@ class CaseGetNearEarthObjectList(private val inPort: InPortNearEarthObjectList) 
     UseCase<Unit, NearEarthObject> {
 
     override fun prepare(args: Unit) = flow { emit(inPort.getNearEarthObjects()) }
+//        .transform { it.forEach { value -> emit(value) } }
         .transform { it.forEach { value -> emit(value) } }
 }
